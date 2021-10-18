@@ -1,21 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import AppLoading from 'expo-app-loading';
+import { FetchFonts } from './src/utils/Fonts';
+import RootNavigator from './src/navigation/RootNavigator';
 
-export default function App() {
+const App = () => {
+
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  if (!dataLoaded)
+    return <AppLoading
+      startAsync={FetchFonts}
+      onFinish={() => setDataLoaded(true)}
+      onError={() => console.error(err)} />
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+      <RootNavigator />
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
