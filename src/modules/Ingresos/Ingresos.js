@@ -22,7 +22,7 @@ const Ingresos = ({ navigation }) => {
         <CustomTitle label='Órdenes de transporte'/>
         <ScrollView>
         {transportOrders.map((transportOrder) => 
-          <CustomCard key={transportOrder.id} onPress={() => navigation.navigate('OrdenIngreso', {transportOrder: transportOrder.id})}>
+          <CustomCard key={transportOrder.id} onPress={() => navigation.navigate('IngresoUnidad', {transportOrder: transportOrder})}>
             <View style={styles.infoContainer}>
               <Text style={styles.textTitle}># Orden</Text>
               <Text style={styles.textTitle}>Estado</Text>

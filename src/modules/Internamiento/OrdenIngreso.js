@@ -14,8 +14,20 @@ const OrdenIngreso = ({ route, navigation }) => {
   useEffect(() => {
     axios.get(`${url}/inboundOrders/${inboundOrderId}`).then((r) => {
       setInboundOrder(r.data);
+      console.log(r.data);
     }).catch((e) => console.log(e));
   }, []);
+
+  const getCardColor = (status) => {
+    switch (status) {
+      case 'Disponible':
+        return '#97FCA1';
+      case 'Observado':
+        return '#FE988C';
+      default:
+        return 'white';
+    }
+  }
 
   if (inboundOrder)
     return (
@@ -36,7 +48,9 @@ const OrdenIngreso = ({ route, navigation }) => {
         <CustomTitle label='Unidades de manipulación'/>
         <ScrollView>
         {inboundOrder.handlingUnits.map((handlingUnit) => 
-          <CustomCard key={handlingUnit.id} onPress={() => navigation.navigate('Verificacion', {inboundOrder: inboundOrder, handlingUnit: handlingUnit})}>
+          <CustomCard style={{backgroundColor: getCardColor(handlingUnit.status)}}
+           key={handlingUnit.id}
+           onPress={() => navigation.navigate('Verificacion', {inboundOrder: inboundOrder, handlingUnit: handlingUnit})}>
             <View style={styles.infoContainer}>
               <Text style={styles.textTitle}># UM</Text>
               <Text style={styles.textTitle}>Producto</Text>
