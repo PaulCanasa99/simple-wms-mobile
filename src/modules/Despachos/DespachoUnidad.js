@@ -17,7 +17,8 @@ const DespachoUnidad = ({ route, navigation }) => {
     navigation.replace('Despachos');
   }
 
-  const handleObservar = () => {
+  const handleObservar = async () => {
+    await axios.put(url + '/handlingUnits/warnHandlingUnit', {data: transportOrder});
     navigation.replace('Despachos');
   }
 
@@ -26,7 +27,7 @@ const DespachoUnidad = ({ route, navigation }) => {
       <>
         <CustomTitle label='Orden de ingreso seleccionada'/>
         <TransportOrderDetail transportOrder={transportOrder}/>
-        <CustomQR setIsQRValid={setIsQRValid} code={transportOrder.handlingUnit.id}/>
+        <CustomQR setIsQRValid={setIsQRValid} code={transportOrder.handlingUnit.handlingUnitId} type='HU'/>
         <View style={styles.buttonsContainer}>
           <CustomButton disabled={!isQRValid} flexGrow={0.33} label='Registrar' onPress={handleOK}/>
           <CustomButton flexGrow={0.33} onPress={handleObservar} label='Observar'/>

@@ -1,31 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import CustomCard from "../../components/CustomCard";
 import CustomTitle from "../../components/CustomTitle";
 import axios from "axios";
 import url from "../../../config";
 import { ScrollView } from "react-native-gesture-handler";
+import moment from 'moment';
 
 const OrdenIngreso = ({ route, navigation }) => {
 
   const { inboundOrderId } = route.params;
   const [inboundOrder, setInboundOrder] = useState();
 
-  useEffect(() => {
-    axios.get(`${url}/inboundOrders/${inboundOrderId}`).then((r) => {
-      setInboundOrder(r.data);
-      console.log(r.data);
-    }).catch((e) => console.log(e));
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      axios.get(`${url}/inboundOrders/${inboundOrderId}`).then((r) => {
+        setInboundOrder(r.data);
+      })
+    }, [])
+  );
 
   const getCardColor = (status) => {
     switch (status) {
-      case 'Disponible':
-        return '#97FCA1';
+      case 'En inspección':
+        return 'white';
       case 'Observado':
         return '#FE988C';
       default:
-        return 'white';
+        return '#97FCA1';
     }
   }
 
@@ -40,9 +43,9 @@ const OrdenIngreso = ({ route, navigation }) => {
             <Text style={styles.textTitle}>Fecha de registro</Text>
           </View>
           <View style={styles.infoContainer}>
-            <Text style={styles.textValue}>{inboundOrder.id}</Text>
+            <Text style={styles.textValue}>{inboundOrder.inboundOrderId}</Text>
             <Text style={styles.textValue}>{inboundOrder.status}</Text>
-            <Text style={styles.textValue}>{inboundOrder.date}</Text>
+            <Text style={styles.textValue}>{moment(inboundOrder.date).format('D MMM YYYY')}</Text>
           </View>
         </CustomCard>
         <CustomTitle label='Unidades de manipulación'/>
@@ -50,14 +53,14 @@ const OrdenIngreso = ({ route, navigation }) => {
         {inboundOrder.handlingUnits.map((handlingUnit) => 
           <CustomCard style={{backgroundColor: getCardColor(handlingUnit.status)}}
            key={handlingUnit.id}
-           onPress={() => navigation.navigate('Verificacion', {inboundOrder: inboundOrder, handlingUnit: handlingUnit})}>
+           onPress={handlingUnit.status === 'En inspección' ? () => navigation.navigate('Verificacion', {inboundOrder: inboundOrder, handlingUnit: handlingUnit}) : null}>
             <View style={styles.infoContainer}>
               <Text style={styles.textTitle}># UM</Text>
               <Text style={styles.textTitle}>Producto</Text>
               <Text style={styles.textTitle}>Cantidad</Text>
             </View>
             <View style={styles.infoContainer}>
-              <Text style={styles.textValue}>{handlingUnit.id}</Text>
+              <Text style={styles.textValue}>{handlingUnit.handlingUnitId}</Text>
               <Text style={styles.textValue}>{handlingUnit.product.name}</Text>
               <Text style={styles.textValue}>{handlingUnit.product.productsPerHU}</Text>
             </View>

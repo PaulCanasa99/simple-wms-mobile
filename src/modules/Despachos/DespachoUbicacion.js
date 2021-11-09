@@ -21,9 +21,9 @@ const DespachoUbicacion = ({ route, navigation }) => {
   if (transportOrder)
     return (
       <>
-        <CustomTitle label='Orden de ingreso seleccionada'/>
+        <CustomTitle label='Orden de transporte seleccionada'/>
         <TransportOrderDetail transportOrder={transportOrder}/>
-        <CustomQR setIsQRValid={setIsQRValid} code={transportOrder.location.code}/>
+        <CustomQR setIsQRValid={setIsQRValid} code={transportOrder.location.code} type='location'/>
         <View style={styles.buttonsContainer}>
           <CustomButton disabled={!isQRValid} flexGrow={0.33} label='Registrar' onPress={handleOK}/>
           <CustomButton flexGrow={0.33} onPress={handleObservar} label='Observar'/>

@@ -8,7 +8,7 @@ const CustomButton= (props) => {
   return (
     <>
       <TouchableHighlight
-        underlayColor='blue'
+        underlayColor={'#1597E5'}
         style={props.disabled ?
           {...styles.submit, flexGrow: props.flexGrow, backgroundColor: '#DFDFDF'}  
         : {...styles.submit, flexGrow: props.flexGrow, backgroundColor: colors.card}        

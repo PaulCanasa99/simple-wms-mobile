@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { useIsFocused } from '@react-navigation/native';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import CustomCard from './CustomCard';
@@ -7,18 +7,8 @@ import CustomButton from './CustomButton';
 
 const CustomQR = (props) => {
   const isFocused = useIsFocused();
-  const [isFocus, setIsFocus] = useState(false);
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-
-  useFocusEffect(
-    useCallback(() => {
-      setIsFocus(true);
-      return () => {
-        setIsFocus(false);
-      };
-    }, [])
-  );
 
   useEffect(() => {
     (async () => {
@@ -29,7 +19,7 @@ const CustomQR = (props) => {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    if(data === props.code) {
+    if(data == props.code) {
       alert(`El código escaneado es correcto`);
       props.setIsQRValid(true);
     }
@@ -54,8 +44,8 @@ const CustomQR = (props) => {
         barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
       />
       }
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
-      {!scanned && <Text style={styles.qrText}>Escaneé el código de la unidad a registrar</Text>}
+      {scanned && <Button title={'Escanear de nuevo'} onPress={() => setScanned(false)} />}
+      {!scanned && <Text style={styles.qrText}>{props.type === 'HU' ? 'Escaneé el código de la unidad a registrar' : 'Escaneé el código de la ubicación a registrar'}</Text>}
     </CustomCard>
   );
 }
@@ -78,7 +68,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     fontSize: 14,
     fontFamily: 'montserrat-semi-bold',
-    paddingHorizontal: 4
+    paddingHorizontal: 0
   }
 });
 

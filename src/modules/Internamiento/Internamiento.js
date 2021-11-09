@@ -1,37 +1,53 @@
 import React, { useState, useEffect } from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View, RefreshControl } from 'react-native';
 import CustomCard from "../../components/CustomCard";
 import CustomTitle from "../../components/CustomTitle";
 import axios from "axios";
 import url from "../../../config";
 import { ScrollView } from "react-native-gesture-handler";
+import moment from 'moment';
 
 const Internamiento = ({ navigation }) => {
 
   const [inboundOrders, setInboundOrders] = useState();
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     axios.get(url + "/inboundOrders").then((r) => {
-      setInboundOrders(r.data.filter((inboundOrder) => inboundOrder.status === 'Pendiente'));
-    }).catch((e) => console.log(e));
+      setInboundOrders(r.data.filter((inboundOrder) => inboundOrder.status === 'En inspección' || inboundOrder.status === 'Pendiente'));
+    }).then((e) => setRefreshing(false));
   }, []);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    axios.get(url + "/inboundOrders").then((r) => {
+      setInboundOrders(r.data.filter((inboundOrder) => inboundOrder.status === 'En inspección' || inboundOrder.status === 'Pendiente'));
+    }).then((e) => setRefreshing(false));
+  }
 
   if (inboundOrders)
     return (
       <>
         <CustomTitle label='Órdenes de ingreso'/>
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+         }
+        >
         {inboundOrders.map((inboundOrder) => 
-          <CustomCard key={inboundOrder.id} onPress={() => navigation.navigate('OrdenIngreso', {inboundOrderId: inboundOrder.id})}>
+          <CustomCard key={inboundOrder.inboundOrderId} onPress={() => navigation.navigate('OrdenIngreso', {inboundOrderId: inboundOrder.id})}>
             <View style={styles.infoContainer}>
               <Text style={styles.textTitle}># Orden</Text>
               <Text style={styles.textTitle}>Estado</Text>
               <Text style={styles.textTitle}>Fecha de registro</Text>
             </View>
             <View style={styles.infoContainer}>
-              <Text style={styles.textValue}>{inboundOrder.id}</Text>
+              <Text style={styles.textValue}>{inboundOrder.inboundOrderId}</Text>
               <Text style={styles.textValue}>{inboundOrder.status}</Text>
-              <Text style={styles.textValue}>{inboundOrder.date}</Text>
+              <Text style={styles.textValue}>{moment(inboundOrder.date).format('D MMM YYYY')}</Text>
             </View>
           </CustomCard>
         )}

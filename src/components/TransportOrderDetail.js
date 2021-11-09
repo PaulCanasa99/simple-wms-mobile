@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet, View } from "react-native";
 import CustomCard from './CustomCard';
+import moment from 'moment';
 
 const TransportOrderDetail = ({transportOrder}) => {
 
@@ -12,9 +13,9 @@ const TransportOrderDetail = ({transportOrder}) => {
         <Text style={styles.textTitle}>Fecha de registro</Text>
       </View>
       <View style={styles.infoContainer}>
-        <Text style={styles.textValue}>{transportOrder.id}</Text>
+        <Text style={styles.textValue}>{transportOrder.transportOrderId}</Text>
         <Text style={styles.textValue}>{transportOrder.status}</Text>
-        <Text style={styles.textValue}>{transportOrder.date}</Text>
+        <Text style={styles.textValue}>{moment(transportOrder.date).format('D MMM YYYY')}</Text>
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.textTitle}># UM</Text>
@@ -22,7 +23,7 @@ const TransportOrderDetail = ({transportOrder}) => {
         <Text style={styles.textTitle}>Ubicación</Text>
       </View>
       <View style={styles.infoContainer}>
-        <Text style={styles.textValue}>{transportOrder.handlingUnit.id}</Text>
+        <Text style={styles.textValue}>{transportOrder.handlingUnit.handlingUnitId}</Text>
         <Text style={styles.textValue}>{transportOrder.handlingUnit.product.name}</Text>
         <Text style={styles.textValue}>{transportOrder.location.code}</Text>
       </View>

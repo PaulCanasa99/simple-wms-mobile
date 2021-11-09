@@ -4,6 +4,7 @@ import { NavigationContainer} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import BottomTabNavigator from './BottomTabNavigator';
+import Login from '../modules/Login/Login';
 
 const Stack = createStackNavigator();
 
@@ -31,12 +32,12 @@ const RootNavigator = () => {
                       headerMode: 'false'
                     }}
                     >
-                    {/* <Stack.Screen
-                        name={Routes.LOGIN_VIEW}
-                        component={views.LoginView}
+                    <Stack.Screen
+                        name={'Login'}
+                        component={Login}
                         options={{
                             header: () => null
-                        }} /> */}
+                        }} />
                     <Stack.Screen
                         name={'BottomTabNavigator'}
                         component={BottomTabNavigator}

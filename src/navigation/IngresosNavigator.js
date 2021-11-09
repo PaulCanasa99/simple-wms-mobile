@@ -9,7 +9,7 @@ const IngresosNavigator = () => {
   const Stack = createStackNavigator();
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{title: 'Ingreso de unidades'}}>
       <Stack.Screen name="Ingresos" component={Ingresos} />
       <Stack.Screen name="IngresoUnidad" component={IngresoUnidad} />
       <Stack.Screen name="IngresoUbicacion" component={IngresoUbicacion} />

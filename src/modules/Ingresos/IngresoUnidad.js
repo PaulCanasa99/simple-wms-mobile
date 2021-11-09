@@ -23,7 +23,7 @@ const IngresoUnidad = ({ route, navigation }) => {
       <>
         <CustomTitle label='Orden de transporte seleccionada'/>
         <TransportOrderDetail transportOrder={transportOrder}/>
-        <CustomQR setIsQRValid={setIsQRValid} code={transportOrder.handlingUnit.id}/>
+        <CustomQR setIsQRValid={setIsQRValid} code={transportOrder.handlingUnit.handlingUnitId} type='HU'/>
         <View style={styles.buttonsContainer}>
           <CustomButton disabled={!isQRValid} flexGrow={0.33} label='Transportar' onPress={handleOK}/>
           <CustomButton flexGrow={0.33} onPress={handleObservar} label='Observar'/>

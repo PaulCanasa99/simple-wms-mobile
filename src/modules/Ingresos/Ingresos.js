@@ -1,37 +1,53 @@
 import React, { useState, useEffect } from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View, RefreshControl } from 'react-native';
 import CustomCard from "../../components/CustomCard";
 import CustomTitle from "../../components/CustomTitle";
 import axios from "axios";
 import url from "../../../config";
 import { ScrollView } from "react-native-gesture-handler";
+import moment from 'moment';
 
 const Ingresos = ({ navigation }) => {
 
   const [transportOrders, setTransportOrders] = useState();
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     axios.get(url + "/transportOrders").then((r) => {
       setTransportOrders(r.data.filter((transportOrder) => transportOrder.inboundOrder));
-    }).catch((e) => console.log(e));
+    }).then((e) => setRefreshing(false));
   }, []);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    axios.get(url + "/transportOrders").then((r) => {
+      setTransportOrders(r.data.filter((transportOrder) => transportOrder.inboundOrder));
+    }).then((e) => setRefreshing(false));
+  }
 
   if (transportOrders)
     return (
       <>
         <CustomTitle label='Órdenes de transporte'/>
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+         }
+        >
         {transportOrders.map((transportOrder) => 
-          <CustomCard key={transportOrder.id} onPress={() => navigation.navigate('IngresoUnidad', {transportOrder: transportOrder})}>
+          <CustomCard key={transportOrder.id} onPress={transportOrder.status !== 'Finalizado' && (() => navigation.navigate('IngresoUnidad', {transportOrder: transportOrder}))}>
             <View style={styles.infoContainer}>
               <Text style={styles.textTitle}># Orden</Text>
               <Text style={styles.textTitle}>Estado</Text>
               <Text style={styles.textTitle}>Fecha de registro</Text>
             </View>
             <View style={styles.infoContainer}>
-              <Text style={styles.textValue}>{transportOrder.id}</Text>
+              <Text style={styles.textValue}>{transportOrder.transportOrderId}</Text>
               <Text style={styles.textValue}>{transportOrder.status}</Text>
-              <Text style={styles.textValue}>{transportOrder.date}</Text>
+              <Text style={styles.textValue}>{moment(transportOrder.date).format('D MMM YYYY')}</Text>
             </View>
           </CustomCard>
         )}
