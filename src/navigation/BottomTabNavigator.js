@@ -20,6 +20,7 @@ const BottomTabNavigator = () => {
         name="InternamientoNavigator"
         component={InternamientoNavigator}
         options={{
+          title:'',
           tabBarLabel: "Internamiento",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="archive-arrow-down" color={color} size={22} />
@@ -30,6 +31,7 @@ const BottomTabNavigator = () => {
         name="IngresosNavigator"
         component={IngresosNavigator}
         options={{
+          title:'',
           tabBarLabel: "Ingresos",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
@@ -44,6 +46,7 @@ const BottomTabNavigator = () => {
         name="DespachosNavigator"
         component={DespachosNavigator}
         options={{
+          title:'',
           tabBarLabel: "Despachos",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons

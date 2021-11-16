@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ActivityIndicator, StyleSheet, Text, View, RefreshControl } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View, RefreshControl, SafeAreaView } from 'react-native';
 import CustomCard from "../../components/CustomCard";
 import CustomTitle from "../../components/CustomTitle";
 import axios from "axios";
@@ -27,7 +27,7 @@ const Ingresos = ({ navigation }) => {
 
   if (transportOrders)
     return (
-      <>
+      <SafeAreaView>
         <CustomTitle label='Órdenes de transporte'/>
         <ScrollView
           refreshControl={
@@ -52,7 +52,7 @@ const Ingresos = ({ navigation }) => {
           </CustomCard>
         )}
         </ScrollView>
-      </>
+      </SafeAreaView>
     )
   return <ActivityIndicator />
 }

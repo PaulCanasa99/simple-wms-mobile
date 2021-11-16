@@ -1,3 +1,3 @@
-const url = 'https://2a55-190-236-76-154.ngrok.io'
+const url = 'https://simplewmsapp.herokuapp.com'
 
 export default url

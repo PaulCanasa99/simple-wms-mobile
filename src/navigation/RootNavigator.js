@@ -32,12 +32,12 @@ const RootNavigator = () => {
                       headerMode: 'false'
                     }}
                     >
-                    <Stack.Screen
+                    {/* <Stack.Screen
                         name={'Login'}
                         component={Login}
                         options={{
                             header: () => null
-                        }} />
+                        }} /> */}
                     <Stack.Screen
                         name={'BottomTabNavigator'}
                         component={BottomTabNavigator}
